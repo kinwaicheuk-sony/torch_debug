@@ -8,3 +8,10 @@ model:
 trainer:
   max_epochs: 50
   checkpoint_path: null
+
+hydra:
+  run:
+    dir: outputs/exp
+  sweep:
+    dir: multirun/exp
+    subdir: ${hydra.job.num}
