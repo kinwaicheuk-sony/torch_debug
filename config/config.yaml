@@ -7,3 +7,4 @@ model:
 
 trainer:
   max_epochs: 50
+  checkpoint_path: null

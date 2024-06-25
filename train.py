@@ -53,14 +53,28 @@ def train(cfg: DictConfig):
     # Initialize TensorBoard logger
     tb_logger = pl.loggers.TensorBoardLogger(save_dir='runs', name=f'simple_nn_experiment')
 
+    # Initialize the ModelCheckpoint callback
+    checkpoint_callback = pl.callbacks.ModelCheckpoint(
+        dirpath=experiment_dir,
+        filename='checkpoint-{epoch:02d}-{train_loss:.2f}',
+        save_top_k=1,
+        verbose=False,
+        monitor='train_loss',
+        mode='min',
+        save_last=True
+    )
+
     # Initialize the trainer
-    trainer = pl.Trainer(max_epochs=cfg.trainer.max_epochs, logger=tb_logger, devices=1)
+    trainer = pl.Trainer(
+        max_epochs=cfg.trainer.max_epochs,
+        logger=tb_logger,
+        devices=1,
+        callbacks=[checkpoint_callback],
+        resume_from_checkpoint=cfg.trainer.checkpoint_path if 'checkpoint_path' in cfg.trainer else None
+    )
 
     # Train the model
     trainer.fit(model, train_loader)
-
-    # Save the model weights
-    torch.save(model.state_dict(), os.path.join(experiment_dir, 'checkpoint.pt'))
 
 if __name__ == "__main__":
     train()
