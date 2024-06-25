@@ -2,17 +2,19 @@ import torch
 import torch.nn as nn
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader, TensorDataset
-from torch.utils.tensorboard import SummaryWriter
+from hydra import main, initialize, compose
+from omegaconf import DictConfig
 import datetime
 import os
 
 # Define a simple neural network using PyTorch Lightning
 class SimpleNN(pl.LightningModule):
-    def __init__(self):
+    def __init__(self, input_dim, hidden_dim, output_dim, lr):
         super(SimpleNN, self).__init__()
-        self.fc1 = nn.Linear(10, 50)
-        self.fc2 = nn.Linear(50, 1)
+        self.fc1 = nn.Linear(input_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, output_dim)
         self.criterion = nn.MSELoss()
+        self.lr = lr
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
@@ -27,7 +29,7 @@ class SimpleNN(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=0.001)
+        return torch.optim.Adam(self.parameters(), lr=self.lr)
 
 # Generate artificial data
 torch.manual_seed(0)
@@ -38,24 +40,27 @@ y = torch.randn(10000, 1)
 dataset = TensorDataset(X, y)
 train_loader = DataLoader(dataset, batch_size=128, shuffle=True)
 
-# Create a timestamp
-timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+# Hydra configuration
+@main(config_path="config", config_name="config")
+def train(cfg: DictConfig):
+    # Create a directory for the experiment
+    experiment_dir = os.path.join('runs', f'simple_nn_experiment')
+    os.makedirs(experiment_dir, exist_ok=True)
 
-# Create a directory for the experiment
-experiment_dir = os.path.join('runs', f'simple_nn_experiment_{timestamp}')
-os.makedirs(experiment_dir, exist_ok=True)
+    # Initialize the model
+    model = SimpleNN(cfg.model.input_dim, cfg.model.hidden_dim, cfg.model.output_dim, cfg.model.lr)
 
-# Initialize TensorBoard logger
-tb_logger = pl.loggers.TensorBoardLogger(save_dir='runs', name=f'simple_nn_experiment_{timestamp}')
+    # Initialize TensorBoard logger
+    tb_logger = pl.loggers.TensorBoardLogger(save_dir='runs', name=f'simple_nn_experiment')
 
-# Initialize the model
-model = SimpleNN()
+    # Initialize the trainer
+    trainer = pl.Trainer(max_epochs=cfg.trainer.max_epochs, logger=tb_logger, devices=1)
 
-# Initialize the trainer
-trainer = pl.Trainer(max_epochs=200, logger=tb_logger, devices=1)
+    # Train the model
+    trainer.fit(model, train_loader)
 
-# Train the model
-trainer.fit(model, train_loader)
+    # Save the model weights
+    torch.save(model.state_dict(), os.path.join(experiment_dir, 'checkpoint.pt'))
 
-# Save the model weights
-torch.save(model.state_dict(), os.path.join(experiment_dir, 'checkpoint.pt'))
+if __name__ == "__main__":
+    train()

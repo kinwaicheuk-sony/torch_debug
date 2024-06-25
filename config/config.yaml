@@ -1,0 +1,9 @@
+# config/config.yaml
+model:
+  input_dim: 10
+  hidden_dim: 50
+  output_dim: 1
+  lr: 0.001
+
+trainer:
+  max_epochs: 50
