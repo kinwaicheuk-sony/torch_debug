@@ -66,11 +66,9 @@ def train(cfg: DictConfig):
 
     # Initialize the trainer
     trainer = pl.Trainer(
-        max_epochs=cfg.trainer.max_epochs,
+        **cfg.trainer,
         logger=tb_logger,
-        devices=1,
         callbacks=[checkpoint_callback],
-        resume_from_checkpoint=cfg.trainer.checkpoint_path if 'checkpoint_path' in cfg.trainer else None
     )
 
     # Train the model

@@ -6,8 +6,11 @@ model:
   lr: 0.001
 
 trainer:
-  max_epochs: 50
-  checkpoint_path: null
+  max_epochs: 200
+  resume_from_checkpoint: null
+  strategy: null
+  accelerator: 'gpu'
+  devices: 1
 
 hydra:
   run:
