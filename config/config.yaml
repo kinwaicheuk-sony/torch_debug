@@ -7,10 +7,10 @@ model:
 
 trainer:
   max_epochs: 200
-  resume_from_checkpoint: null
-  strategy: null
   accelerator: 'gpu'
+  strategy: 'ddp'
   devices: 1
+  num_nodes: 1
 
 hydra:
   run:
