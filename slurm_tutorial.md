@@ -1,8 +1,9 @@
-# Step 1: prepare job scripts
+# Sending jobs
+## Step 1: prepare job scripts
 The error logs will be stored in the directory where you submit the job via `sbatch train_job.slurm`. It is required to have the folder `slurm-logs` generated before the logs could be generated.
 
 
-## Using venv
+### Using venv
 If you have an `activate` file inside `bin`, you can do the following.
 
 ```bash
@@ -36,7 +37,7 @@ mkdir -p my_env
 tar -xzf my_env.tar.gz -C my_env
 ```
 
-## Using conda
+### Using conda
 
 ```bash
 #!/bin/bash
@@ -63,7 +64,7 @@ conda activate mini
 python /mnt/beegfs/group/mt/kinwai/torch_debug/train.py
 ```
 
-# Step 2: Submit jobs
+## Step 2: Submit jobs
 ```bash
 sbatch train_job.slurm
 ```
@@ -73,7 +74,7 @@ To cancel jobs
 scancel job_id
 ```
 
-# Step 3: monitor jobs
+## Step 3: monitor jobs
 To view the jobs from a specific user
 ```bash
 squeue -u username
@@ -117,7 +118,7 @@ squeue -u your_username -o "%.18i %.30j %.9u %.2t %.10M %.6D %R"
 ### Interactive mode
 
 ```bash
-sbash --partition=sharedp --cpus-per-task=16 --gpus=4 --mem=16G mfmc13
+sbash --partition=sharedp --cpus-per-task=32 --gpus=4 --mem=16G mfmc13
 ```
 
 ### Check disk quota
@@ -126,9 +127,7 @@ show_quota
 ```
 
 ### Check cluster usage
-```bash
-sig
-```
+Use either `sig`, `sin`, `sip` to check the status of the clutster
 
 # TODO
 When using this config, I cannot send the jobs
