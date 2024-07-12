@@ -9,6 +9,9 @@
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:2
 #SBATCH --account=mt
+#SBATCH --time=0-00:02:00
+#SBATCH --signal=SIGUSR1@30
+#SBATCH --requeue
 
 # Load necessary modules (if needed)
 # module load python/3.10
@@ -22,3 +25,4 @@ conda activate mini
 # Run the Python script
 srun python /mnt/beegfs/group/mfm/data/kinwai/torch_debug/train.py \
 trainer.devices=2 \
+trainer.max_epochs=20000

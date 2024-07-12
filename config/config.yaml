@@ -11,10 +11,11 @@ trainer:
   strategy: 'ddp'
   devices: 1
   num_nodes: 1
+  enable_progress_bar: false
 
 hydra:
   run:
-    dir: outputs/exp
+    dir: outputs/requeue_exp
   sweep:
-    dir: multirun/exp
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
     subdir: ${hydra.job.num}

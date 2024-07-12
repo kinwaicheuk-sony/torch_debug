@@ -1,10 +1,11 @@
 import torch
 import torch.nn as nn
 import pytorch_lightning as pl
+from pytorch_lightning.plugins.environments import SLURMEnvironment
 from torch.utils.data import DataLoader, TensorDataset
-from hydra import main, initialize, compose
+from hydra import main
 from omegaconf import DictConfig
-import datetime
+import signal
 import os
 
 # Define a simple neural network using PyTorch Lightning
@@ -69,6 +70,7 @@ def train(cfg: DictConfig):
         **cfg.trainer,
         logger=tb_logger,
         callbacks=[checkpoint_callback],
+        plugins=[SLURMEnvironment(requeue_signal=signal.SIGUSR1)]
     )
 
     # Train the model
