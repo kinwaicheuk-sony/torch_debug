@@ -66,12 +66,21 @@ def train(cfg: DictConfig):
     )
 
     # Initialize the trainer
-    trainer = pl.Trainer(
-        **cfg.trainer,
-        logger=tb_logger,
-        callbacks=[checkpoint_callback],
-        plugins=[SLURMEnvironment(requeue_signal=signal.SIGUSR1)]
-    )
+    if 'SLURM_JOB_ID' in os.environ:
+        cfg.trainer.enable_progress_bar = False
+        trainer = pl.Trainer(
+            **cfg.trainer,
+            logger=tb_logger,
+            callbacks=[checkpoint_callback],
+            plugins=[SLURMEnvironment(requeue_signal=signal.SIGUSR1)]
+        )
+    else:
+        cfg.trainer.enable_progress_bar = True
+        trainer = pl.Trainer(
+            **cfg.trainer,
+            logger=tb_logger,
+            callbacks=[checkpoint_callback]
+        )
 
     # Train the model
     trainer.fit(model, train_loader)
