@@ -9,7 +9,7 @@
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:2
 #SBATCH --account=mt
-#SBATCH --time=0-00:02:00
+#SBATCH --time=0-00:2:00
 #SBATCH --signal=SIGUSR1@30
 #SBATCH --requeue
 
@@ -20,7 +20,7 @@
 # source /home/kinwai.cheuk/mambaforge/envs/mini_v2/bin/activate
 
 source /home/kinwai.cheuk/mambaforge/bin/activate
-conda activate mini
+conda activate mini_1.9.0
 
 # Run the Python script
 srun python /mnt/beegfs/group/mfm/data/kinwai/torch_debug/train.py \
