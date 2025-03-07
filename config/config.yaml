@@ -15,7 +15,7 @@ trainer:
 
 hydra:
   run:
-    dir: outputs/requeue_exp
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
   sweep:
     dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
     subdir: ${hydra.job.num}
