@@ -117,31 +117,32 @@ train_loader = DataLoader(dataset, batch_size=10, shuffle=False)
 # Hydra configuration
 @main(config_path="config", config_name="config")
 def train(cfg: DictConfig):
+    project_name = 'simple_nn_experiment'
     # Create a directory for the experiment
-    experiment_dir = os.path.join('runs', f'simple_nn_experiment')
+    experiment_dir = os.path.join('runs', project_name)
     os.makedirs(experiment_dir, exist_ok=True)
 
     # Initialize the model
     model = SimpleNN(cfg.model.input_dim, cfg.model.hidden_dim, cfg.model.output_dim, cfg.model.lr)
 
     # Initialize TensorBoard logger and loss writer
-    tb_logger = pl.loggers.TensorBoardLogger(save_dir='runs', name=f'simple_nn_experiment')
-    loss_writer = LossWriter(f'./', write_every_n_steps=10)
+    wandb_logger = pl.loggers.WandbLogger(project=project_name)
+    loss_writer = LossWriter(f'./{wandb_logger.experiment.project}/{wandb_logger.experiment.id}', write_every_n_steps=10)
 
     # Initialize the trainer
     if 'SLURM_JOB_ID' in os.environ:
         cfg.trainer.enable_progress_bar = False
         trainer = pl.Trainer(
             **cfg.trainer,
-            logger=tb_logger,
+            logger=wandb_logger,
             callbacks=[loss_writer],
             plugins=[SLURMEnvironment(requeue_signal=signal.SIGUSR1)]
         )
     else:
         cfg.trainer.enable_progress_bar = True
         trainer = pl.Trainer(
-            **cfg.trainer,
-            logger=tb_logger,
+            **cfg.trainer,       
+            logger=wandb_logger,
             callbacks=[loss_writer]
         )
 
