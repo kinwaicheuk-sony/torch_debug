@@ -8,7 +8,7 @@ sinfo
 ### Interactive mode
 
 ```bash
-salloc --partition=gc3-h100  --ntasks=8 --ntasks-per-node=8 --gpus-per-node=8 --cpus-per-task=32 --time=60
+salloc --partition=gc3-h100  --exclude=comp-h100-[9-51] --ntasks=8 --ntasks-per-node=8 --gpus-per-node=8 --cpus-per-task=32 --time=60
 ```
 
 Attach to existing interactive seesion

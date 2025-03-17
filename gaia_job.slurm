@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=gc3-h100
+#SBATCH --exclude=comp-h100-[9-51]
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=4
