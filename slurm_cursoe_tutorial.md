@@ -124,6 +124,12 @@ squeue -u your_username -o "%.18i %.30j %.9u %.2t %.10M %.6D %R"
 sbash --partition=sharedp --cpus-per-task=32 --gpus=4 --mem=16G mfmc13
 ```
 
+To attach to existing interactive session
+```bash
+sattach jobid.0
+```
+But it will connect to the main session. So make sure you use `tmux` when requesting an interactive node.
+
 ### Check disk quota
 ```bash
 show_quota
