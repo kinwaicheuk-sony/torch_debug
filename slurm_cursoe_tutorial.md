@@ -18,7 +18,9 @@ If you have an `activate` file inside `bin`, you can do the following.
 #SBATCH --mem=10G
 #SBATCH --gres=gpu:1
 #SBATCH --account=mt
+#SBATCH --nodelist=mfmc10
 #SBATCH --requeue
+#SBATCH --signal=SIGUSR1@30
 
 # Load necessary modules (if needed)
 module load python/3.10
@@ -51,6 +53,7 @@ tar -xzf my_env.tar.gz -C my_env
 #SBATCH --mem=10G
 #SBATCH --gres=gpu:1
 #SBATCH --account=mt
+#SBATCH --signal=SIGUSR1@30
 #SBATCH --requeue
 
 # Load necessary modules (if needed)
