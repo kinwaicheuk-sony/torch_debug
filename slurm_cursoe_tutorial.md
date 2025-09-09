@@ -126,9 +126,20 @@ sbash --partition=sharedp --cpus-per-task=32 --gpus=4 --mem=16G mfmc13
 
 To attach to existing interactive session
 ```bash
-sattach jobid.0
+sattach xxxx.0
 ```
+
+where `xxxx` is the jobid. 
+
 But it will connect to the main session. So make sure you use `tmux` when requesting an interactive node.
+
+Alternatively, we can create an normal job. Then use srun to attach a new interactive session to it (Remember to start a `tmux` session before `srun`, otherwise the interactive session will be killed once we exited the job). 
+
+```
+srun --jobid=xxxx --pty bash
+```
+
+
 
 ### Check disk quota
 ```bash
