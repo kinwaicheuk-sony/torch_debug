@@ -8,10 +8,10 @@ model:
 trainer:
   max_epochs: 200
   accelerator: 'gpu'
-  strategy: 'ddp'
-  devices: 1
-  num_nodes: 1
-  enable_progress_bar: false
+  # strategy: 'ddp'
+  # devices: 1
+  # num_nodes: 1
+  enable_progress_bar: true
 
 hydra:
   run:
