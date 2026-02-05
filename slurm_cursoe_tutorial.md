@@ -121,7 +121,7 @@ squeue -u your_username -o "%.18i %.30j %.9u %.2t %.10M %.6D %R"
 ### Interactive mode
 
 ```bash
-sbash --partition=sharedp --cpus-per-task=32 --gpus=4 --mem=16G mfmc13
+sbash --partition=sharedp --cpus-per-task=64 --gpus=4 --mem=128G mfmc10
 ```
 
 To attach to existing interactive session
@@ -139,7 +139,22 @@ Alternatively, we can create an normal job. Then use srun to attach a new intera
 srun --jobid=xxxx --pty bash
 ```
 
+Alternatively, we can create an normal job. Then use srun to attach a new interactive session to it (Remember to start a `tmux` session before `srun`, otherwise the interactive session will be killed once we exited the job). 
 
+```
+srun --jobid=xxxx --pty bash
+```
+
+
+Alternatively, if we created a job using 
+```
+/usr/sbin/sshd -D -p 2222 -f /dev/null -h ~/.ssh/host_rsa # uses the user key as the host key
+```
+
+Then we can ssh into the interactive session from the login node
+```
+ssh mfmcl3 -p 2222
+```
 
 ### Check disk quota
 ```bash
