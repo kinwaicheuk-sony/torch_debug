@@ -1,4 +1,4 @@
-# Local server
+# Method 1: Local server
 
 Step 1: Environment Setup
 ```
@@ -13,6 +13,15 @@ python train.py
 
 Step 3: Result
 The trained model will be saved in the `outputs` directory.
+
+# Method 2: Docker
+First building the Docker image following the instructions in [docker/how_to_build_docker_images.md](docker/how_to_build_docker_images.md).
+
+Then running the container and mounting the current directory to `/workspace` in the container.
+
+```bash
+docker run --rm --gpus all -v $(pwd):/workspace debug_code:v1 python train.py
+```
 
 
 
