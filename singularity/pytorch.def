@@ -3,18 +3,24 @@ From: nvidia/cuda:12.8.0-cudnn-runtime-ubuntu22.04
 
 %files
     requirements.txt /opt/app/requirements.txt
-
-%post
-    # Install system dependencies if needed
-    apt-get update && apt-get install -y \
-        build-essential \
-        && rm -rf /var/lib/apt/lists/*
     
-    # Install Python dependencies
-    pip install --no-cache-dir -r /opt/app/requirements.txt
+%post
+    # Install wget
+    apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+    
+    # Install Miniforge
+    wget https://github.com/conda-forge/miniforge/releases/download/25.11.0-1/Miniforge3-25.11.0-1-Linux-x86_64.sh -O /tmp/miniforge3.sh
+    bash /tmp/miniforge3.sh -b -p /opt/miniforge3
+    rm /tmp/miniforge3.sh
+    
+    # Create environment with specific Python version
+    /opt/miniforge3/bin/mamba create -n myenv python=3.10.2 -y
+    
+    # Install your requirements
+    /opt/miniforge3/envs/myenv/bin/pip install -r /opt/app/requirements.txt
 
 %environment
-    export LC_ALL=C
+    export PATH=/opt/mambaforge/envs/myenv/bin:$PATH
 
 %runscript
     exec python "$@"
