@@ -8,8 +8,10 @@ pip install -r requirements.txt
 Step 2: Training
 
 ```
-python train.py
+python train.py trainer.devices=1
 ```
+
+Change the value of `trainer.devices` for the number of GPUs to use.
 
 Step 3: Result
 The trained model will be saved in the `outputs` directory.
