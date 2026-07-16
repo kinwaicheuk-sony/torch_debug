@@ -22,6 +22,22 @@ SHARE-USE_PARTITION   USED / TOTAL
       large-rdc-a100   112 / 128  
 ```
 
+### Check node IP
+```bash
+getent hosts comp-a100-h-76
+```
+
+### Direct ssh
+```bash
+Host gaia_interactive
+  HostName 192.168.0.141
+  ProxyJump gaia_old
+  User xxx
+  Port 2222
+  IdentityFile ~/.ssh/GIGA_ecdsa_key
+```
+
+
 ### Check my account associations
 ```
 sacctmgr show user $USER --associations
