@@ -69,3 +69,11 @@ From: nvidia/cuda:12.8.0-cudnn-runtime-ubuntu22.04
     exec python "$@"
 ```
 </details>
+
+# Converting from Docker to Singularity
+
+
+```bash
+docker save debug_code:v1 -o docker_img.tar
+
+```
