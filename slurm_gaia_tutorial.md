@@ -1,6 +1,32 @@
 # Useful commands
 conda can be installed in the login node
 
+### Check available resources
+```bash
+gu
+```
+
+Example output
+```
+PROJECT               USED / TOTAL
+           project48     8 / 8    
+           project55     0 / 6    
+
+PROJECT_PARTITION     USED AVAILABILITY DETAIL
+   project48-a100-v2     8           No Project allocation is exhausted.
+   project55-a100-v2     0          Yes 6 GPU(s) are available
+
+SHARE-USE_PARTITION   USED / TOTAL
+         shared-a100   112 / 128  
+      shared-a100-v2   407 / 416  
+      large-rdc-a100   112 / 128  
+```
+
+### Check my account associations
+```
+sacctmgr show user $USER --associations
+```
+
 ### Check Node usage
 ```bash
 sinfo
