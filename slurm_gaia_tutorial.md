@@ -28,7 +28,15 @@ getent hosts comp-a100-h-76
 ```
 
 ### Direct ssh
+
+In the casae of direct connection
+> H100 -> GAIA
 ```bash
+Host gaia_old
+  HostName login.gaia.sony.co.jp
+  User aa409938
+  IdentityFile ~/.ssh/GIGA_ecdsa_key
+  
 Host gaia_interactive
   HostName 192.168.0.141
   ProxyJump gaia_old
@@ -37,6 +45,26 @@ Host gaia_interactive
   IdentityFile ~/.ssh/GIGA_ecdsa_key
 ```
 
+### Proxy Jump
+
+In the case of
+> laptop -> H100 -> GAIA
+
+```bash
+Host gaia1_proxy
+  HostName login.gaia.sony.co.jp
+  User aa409938
+  IdentityFile ~/.ssh/GIGA_ecdsa_key
+  ProxyJump H100
+
+Host gaia1_interactive
+  HostName 192.168.0.141
+  User aa409938
+  IdentityFile ~/.ssh/GIGA_ecdsa_key
+  ProxyJump gaia1_proxy
+  Port 2222
+  ForwardAgent yes 
+```
 
 ### Check my account associations
 ```
