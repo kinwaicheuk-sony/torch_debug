@@ -1,6 +1,15 @@
 # Useful commands
 conda can be installed in the login node
 
+### Allow the use of github via proxy
+
+```
+export http_proxy="http://proxy-sen.noc.sony.co.jp:10080"
+export https_proxy="http://proxy-sen.noc.sony.co.jp:10080"
+export HTTP_PROXY="$http_proxy"
+export HTTPS_PROXY="$https_proxy"
+```
+
 ### Check available resources
 ```bash
 gu
